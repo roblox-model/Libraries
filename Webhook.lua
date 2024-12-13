@@ -1,7 +1,12 @@
-local url = webhook
-local str = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.ScreenEffects:WaitForChild("ItemFrame").TextLabel.Text, "obtained.", "")
+local URI = Webhook -- Defined in the Loader
 
-local troll = {
+local HTTP = game:GetService("HttpService")
+local Player = game:GetService("Players").LocalPlayer
+local FX = Player.PlayerGui.ScreenEffects
+local Frame = FX:WaitForChild("ItemFrame")
+local Item = string.gsub(Frame.TextLabel.Text, "obtained.", "")
+
+local Quotes = {
     "kys",
     "are you the real tesar",
     "oh le couz passe le sperme la",
@@ -16,26 +21,27 @@ local troll = {
     "cesar pavé"
 }
 
-local data = 
-    {
-        ["content"] = "epic boss webhook",
-        ["embeds"] = {{
-            ["title"] = string.format("**%s**", str),
-            ["description"] = troll[math.random(1, #troll)],
-            ["type"] = "rich",
-            ["color"] = tonumber(000000),
-        }}
+local Data = {
+    content = "🐱‍💻",
+    embeds = {
+        {
+            title = string.format("**%s**", Item),
+            description = Quotes[math.random(1, #Quotes)],
+            type = "rich",
+            color = 0x000000
+        }
     }
+}
 
-local new = game:service('HttpService'):JSONEncode(data)
+local Payload = HTTP:JSONEncode(Data)
 
-local headers = {
-        ["content-type"] = "application/json"
+local Headers = {
+    ["Content-Type"] = "application/json"
 }
 
 request({
-	Url = url,
-    Body = new,
-	Method = "POST",
-    Headers = headers
+    Url = URI,
+    Body = Payload,
+    Method = "POST",
+    Headers = Headers
 })
